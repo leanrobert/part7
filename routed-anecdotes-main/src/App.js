@@ -60,9 +60,9 @@ const CreateNew = (props) => {
   const info = useField('text')
 
   const reset = () => {
-    content.reset()
-    author.reset()
-    info.reset()
+    content.onReset()
+    author.onReset()
+    info.onReset()
   }
 
   const handleSubmit = (e) => {
