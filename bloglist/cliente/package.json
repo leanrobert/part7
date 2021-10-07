@@ -1,14 +1,15 @@
 {
-  "name": "client",
+  "name": "cliente",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/user-event": "^7.2.1",
+    "@testing-library/user-event": "^12.8.3",
     "axios": "^0.22.0",
     "prop-types": "^15.7.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "^4.0.3"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -19,7 +20,10 @@
     "cypress:open": "cypress open"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
@@ -35,10 +39,10 @@
   },
   "proxy": "http://localhost:3001",
   "devDependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
     "cypress": "^8.5.0",
-    "eslint-plugin-cypress": "^2.9.0",
-    "eslint-plugin-jest": "^23.6.0"
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-jest": "^24.5.2"
   }
 }
