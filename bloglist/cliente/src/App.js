@@ -3,9 +3,12 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
+import UsersData from './components/UsersData'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import storage from './utils/storage'
 import { initializeBlogs, createBlogReducer, updateBlogReducer, deleteBlogReducer } from './reducers/blogsReducer'
+import { initializeUsers } from './reducers/usersReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { login, logout } from './reducers/loginReducer'
 import { notificate } from './reducers/notificationReducer'
@@ -20,9 +23,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [dispatch])
 
-  const { blogs, user, notification } = useSelector(state => state)
+  const { blogs, user, notification, users } = useSelector(state => state)
 
   const notifyWith = (message, type='success') => {
     dispatch(notificate({ message, type }))
@@ -106,7 +110,7 @@ const App = () => {
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
   return (
-    <div>
+    <Router>
       <h2>blogs</h2>
 
       <Notification notification={notification} />
@@ -119,16 +123,37 @@ const App = () => {
         <NewBlog createBlog={createBlog} />
       </Togglable>
 
-      {blogs.sort(byLikes).map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLike={handleLike}
-          handleRemove={handleRemove}
-          own={user.username===blog.user.username}
-        />
-      )}
-    </div>
+      <Switch>
+        <Route path="/users">
+          <h2>Users</h2>
+          <table>
+            <tbody>
+              <tr>
+                <td></td>
+                <td><b>blogs created</b></td>
+              </tr>
+              {users.map(user =>
+                <UsersData
+                  key={user.id}
+                  user={user}
+                />
+              )}
+            </tbody>
+          </table>
+        </Route>
+        <Route path="/">
+          {blogs.sort(byLikes).map(blog =>
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleLike={handleLike}
+              handleRemove={handleRemove}
+              own={user.username===blog.user.username}
+            />
+          )}
+        </Route>
+      </Switch>
+    </Router>
   )
 }
 
