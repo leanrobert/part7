@@ -12,6 +12,7 @@ import { initializeUsers } from './reducers/usersReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { login, logout } from './reducers/loginReducer'
 import { notificate } from './reducers/notificationReducer'
+import UsersDetails from './components/UsersDetails'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -124,6 +125,9 @@ const App = () => {
       </Togglable>
 
       <Switch>
+        <Route path="/users/:id">
+          <UsersDetails users={users} />
+        </Route>
         <Route path="/users">
           <h2>Users</h2>
           <table>
