@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { login, logout } from './reducers/loginReducer'
 import { notificate } from './reducers/notificationReducer'
 import UsersDetails from './components/UsersDetails'
+import BlogsDetails from './components/BlogsDetails'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -125,6 +126,9 @@ const App = () => {
       </Togglable>
 
       <Switch>
+        <Route path="/blogs/:id">
+          <BlogsDetails handleLike={handleLike} handleRemove={handleRemove} user={user} blogs={blogs} />
+        </Route>
         <Route path="/users/:id">
           <UsersDetails users={users} />
         </Route>
@@ -150,9 +154,6 @@ const App = () => {
             <Blog
               key={blog.id}
               blog={blog}
-              handleLike={handleLike}
-              handleRemove={handleRemove}
-              own={user.username===blog.user.username}
             />
           )}
         </Route>
