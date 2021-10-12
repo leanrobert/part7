@@ -4,7 +4,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlog from './components/NewBlog'
 import UsersData from './components/UsersData'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 import storage from './utils/storage'
 import { initializeBlogs, createBlogReducer, updateBlogReducer, deleteBlogReducer } from './reducers/blogsReducer'
@@ -113,13 +113,17 @@ const App = () => {
 
   return (
     <Router>
+      <div style={{ backgroundColor:'gray' }}>
+        <Link to="/">blogs </Link>
+        <Link to="/users">users </Link>
+        <span>
+          {user.name} logged in <button onClick={handleLogout}>logout</button>
+        </span>
+      </div>
+
       <h2>blogs</h2>
 
       <Notification notification={notification} />
-
-      <p>
-        {user.name} logged in <button onClick={handleLogout}>logout</button>
-      </p>
 
       <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
         <NewBlog createBlog={createBlog} />
