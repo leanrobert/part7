@@ -7,7 +7,7 @@ import UsersData from './components/UsersData'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 
 import storage from './utils/storage'
-import { initializeBlogs, createBlogReducer, updateBlogReducer, deleteBlogReducer } from './reducers/blogsReducer'
+import { initializeBlogs, createBlogReducer, updateBlogReducer, deleteBlogReducer, commentBlogReducer } from './reducers/blogsReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { login, logout } from './reducers/loginReducer'
@@ -74,6 +74,10 @@ const App = () => {
     }
   }
 
+  const addComment = async (id, comment) => {
+    dispatch(commentBlogReducer(id, comment))
+  }
+
   const handleLogout = () => {
     dispatch(logout())
     storage.logoutUser()
@@ -121,17 +125,11 @@ const App = () => {
         </span>
       </div>
 
-      <h2>blogs</h2>
-
       <Notification notification={notification} />
-
-      <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
-        <NewBlog createBlog={createBlog} />
-      </Togglable>
 
       <Switch>
         <Route path="/blogs/:id">
-          <BlogsDetails handleLike={handleLike} handleRemove={handleRemove} user={user} blogs={blogs} />
+          <BlogsDetails handleLike={handleLike} handleRemove={handleRemove} user={user} blogs={blogs} addComment={addComment}/>
         </Route>
         <Route path="/users/:id">
           <UsersDetails users={users} />
@@ -154,6 +152,10 @@ const App = () => {
           </table>
         </Route>
         <Route path="/">
+          <h2>blogs</h2>
+          <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
+            <NewBlog createBlog={createBlog} />
+          </Togglable>
           {blogs.sort(byLikes).map(blog =>
             <Blog
               key={blog.id}
