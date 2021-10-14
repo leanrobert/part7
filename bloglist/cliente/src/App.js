@@ -15,6 +15,8 @@ import { notificate } from './reducers/notificationReducer'
 import UsersDetails from './components/UsersDetails'
 import BlogsDetails from './components/BlogsDetails'
 
+import { Form, Button, Nav, Table } from 'react-bootstrap'
+
 const App = () => {
   const dispatch = useDispatch()
 
@@ -85,30 +87,34 @@ const App = () => {
 
   if ( !user ) {
     return (
-      <div>
-        <h2>login to application</h2>
+      <div className="container">
+        <h2 className="text-center">Login to application</h2>
 
         <Notification notification={notification} />
 
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              id='username'
-              value={username}
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password
-            <input
-              id='password'
-              value={password}
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button id='login'>login</button>
-        </form>
+        <div style={{ padding: '60px 0' }}>
+          <Form onSubmit={handleLogin} style={{ maxWidth: '320px', margin: '0 auto' }}>
+            <Form.Group size="lg">
+              <Form.Label>username</Form.Label>
+              <Form.Control
+                type='text'
+                id='username'
+                value={username}
+                onChange={({ target }) => setUsername(target.value)}
+              />
+            </Form.Group>
+            <Form.Group size="lg">
+              <Form.Label>password</Form.Label>
+              <Form.Control
+                type='password'
+                id='password'
+                value={password}
+                onChange={({ target }) => setPassword(target.value)}
+              />
+            </Form.Group>
+            <Button block type="submit" size="lg" id='login'>login</Button>
+          </Form>
+        </div>
       </div>
     )
   }
@@ -116,55 +122,63 @@ const App = () => {
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
   return (
-    <Router>
-      <div style={{ backgroundColor:'lightgray' }}>
-        <Link to="/">blogs</Link>
-        <Link to="/users">users</Link>
-        <span>
-          {user.name} logged in <button onClick={handleLogout}>logout</button>
-        </span>
-      </div>
+    <div className="container">
+      <Router>
+        <Nav variant='tabs' defaultActiveKey='/'>
+          <Nav.Item>
+            <Nav.Link href='/' as='div'><Link to="/">blogs</Link></Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link to='/users' as='div'><Link to="/users">users</Link></Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link as='div'>
+              {user.name} logged in <Button variant="danger" onClick={handleLogout}>logout</Button>
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
 
-      <Notification notification={notification} />
+        <Notification notification={notification} />
 
-      <Switch>
-        <Route path="/blogs/:id">
-          <BlogsDetails handleLike={handleLike} handleRemove={handleRemove} user={user} blogs={blogs} addComment={addComment}/>
-        </Route>
-        <Route path="/users/:id">
-          <UsersDetails users={users} />
-        </Route>
-        <Route path="/users">
-          <h2>Users</h2>
-          <table>
-            <tbody>
-              <tr>
-                <td></td>
-                <td><b>blogs created</b></td>
-              </tr>
-              {users.map(user =>
-                <UsersData
-                  key={user.id}
-                  user={user}
-                />
-              )}
-            </tbody>
-          </table>
-        </Route>
-        <Route path="/">
-          <h2>blogs</h2>
-          <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
-            <NewBlog createBlog={createBlog} />
-          </Togglable>
-          {blogs.sort(byLikes).map(blog =>
-            <Blog
-              key={blog.id}
-              blog={blog}
-            />
-          )}
-        </Route>
-      </Switch>
-    </Router>
+        <Switch>
+          <Route path="/blogs/:id">
+            <BlogsDetails handleLike={handleLike} handleRemove={handleRemove} user={user} blogs={blogs} addComment={addComment}/>
+          </Route>
+          <Route path="/users/:id">
+            <UsersDetails users={users} />
+          </Route>
+          <Route path="/users">
+            <h2>Users</h2>
+            <Table striped>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td><b>blogs created</b></td>
+                </tr>
+                {users.map(user =>
+                  <UsersData
+                    key={user.id}
+                    user={user}
+                  />
+                )}
+              </tbody>
+            </Table>
+          </Route>
+          <Route path="/">
+            <h2>Blogs</h2>
+            <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
+              <NewBlog createBlog={createBlog} />
+            </Togglable>
+            {blogs.sort(byLikes).map(blog =>
+              <Blog
+                key={blog.id}
+                blog={blog}
+              />
+            )}
+          </Route>
+        </Switch>
+      </Router>
+    </div>
   )
 }
 

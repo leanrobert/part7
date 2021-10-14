@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { Form, Button, Row, Col, ListGroup, Card } from 'react-bootstrap'
 
 const BlogsDetails = ({ blogs, handleLike, handleRemove, user, addComment }) => {
   const [comment, setComment] = useState('')
@@ -16,21 +17,31 @@ const BlogsDetails = ({ blogs, handleLike, handleRemove, user, addComment }) => 
   return (
     <div>
       <h2>{blog.title}</h2>
-      <div>{blog.url}</div>
-      <div>
-        likes {blog.likes} <button onClick={() => handleLike(blog.id)}>like</button>
-      </div>
-      <div>added by {blog.user.name}</div>
-      {user.username===blog.user.username && <button onClick={() => handleRemove(blog.id)}>remove</button>}
+      <p>{blog.url}</p>
+      <p>
+        likes {blog.likes} <Button onClick={() => handleLike(blog.id)}>like</Button>
+      </p>
+      <p>added by {blog.user.name}</p>
+      {user.username===blog.user.username && <Button onClick={() => handleRemove(blog.id)}>remove</Button>}
       <h3>comments</h3>
-      <form onSubmit={handleNewComment}>
-        <input id="comment" value={comment} onChange={e => setComment(e.target.value)} /><button>add comment</button>
-      </form>
-      <ul>
-        {blog.comments.map((comment, index) =>
-          <li key={index}>{comment}</li>
-        )}
-      </ul>
+      <Form onSubmit={handleNewComment}>
+        <Row>
+          <Col>
+            <Form.Control id="comment" value={comment} onChange={e => setComment(e.target.value)} />
+          </Col>
+          <Col>
+            <Button>add comment</Button>
+          </Col>
+        </Row>
+      </Form>
+      <br />
+      <Card>
+        <ListGroup>
+          {blog.comments.map((comment, index) =>
+            <ListGroup.Item key={index}>{comment}</ListGroup.Item>
+          )}
+        </ListGroup>
+      </Card>
     </div>
   )
 }
