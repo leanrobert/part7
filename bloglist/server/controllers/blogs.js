@@ -64,4 +64,20 @@ router.post('/', async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
+router.post('/:id/comments', async (req, res) => {
+  const blog = await Blog.findById(req.params.id)
+  const comment = req.body.comment
+
+  const decodedToken = jwt.verify(req.token, process.env.SECRET)
+
+  if (!req.token || !decodedToken.id) {
+    return res.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  blog.comments.push(comment)
+  await blog.save()
+
+  res.status(201).json(blog)
+})
+
 module.exports = router

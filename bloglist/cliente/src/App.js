@@ -113,9 +113,9 @@ const App = () => {
 
   return (
     <Router>
-      <div style={{ backgroundColor:'gray' }}>
-        <Link to="/">blogs </Link>
-        <Link to="/users">users </Link>
+      <div style={{ backgroundColor:'lightgray' }}>
+        <Link to="/">blogs</Link>
+        <Link to="/users">users</Link>
         <span>
           {user.name} logged in <button onClick={handleLogout}>logout</button>
         </span>
